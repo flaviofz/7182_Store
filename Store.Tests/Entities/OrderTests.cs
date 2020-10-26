@@ -11,30 +11,30 @@ namespace Store.Tests.Entities
         private readonly Customer _customer = new Customer("Flavio Zavarise", "flaviofz@gmail.com");
         private readonly Product _product = new Product("Produto 1", 10, true);
         private readonly Discount _discount = new Discount(10, DateTime.Now.AddDays(5));
+        private readonly Order _order = new Order(new Customer("Flavio Zavarise", "flaviofz@gmail.com"), 0, null);
 
         [TestMethod]
         [TestCategory("Domain")]
         public void Dado_um_novo_pedido_valido_ele_deve_gerar_um_numero_com_8_caracteres()
         {
-            var order = new Order(_customer, 0, null);
-
-            Assert.AreEqual(8, order.Number.Length);
+            Assert.AreEqual(8, _order.Number.Length);
         }
 
         [TestMethod]
         [TestCategory("Domain")]
         public void Dado_um_novo_pedido_seu_status_deve_ser_aguardando_pagamento()
         {
-            var order = new Order(_customer, 0, null);
-
-            Assert.AreEqual(order.Status, EOrderStatus.WaitingPayment);
+            Assert.AreEqual(_order.Status, EOrderStatus.WaitingPayment);
         }
 
         [TestMethod]
         [TestCategory("Domain")]
         public void Dado_um_pagamento_do_pedido_seu_status_deve_ser_aguardando_entrega()
         {
-            Assert.Fail();
+            _order.AddItem(_product, 1);
+            _order.Pay(10);
+
+            Assert.AreEqual(_order.Status, EOrderStatus.WaitingDelivery);
         }
 
         [TestMethod]
