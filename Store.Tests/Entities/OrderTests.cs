@@ -41,16 +41,18 @@ namespace Store.Tests.Entities
         [TestCategory("Domain")]
         public void Dado_um_pedido_cancelado_seu_status_deve_ser_cancelado()
         {
-            Assert.Fail();
+            _order.Cancel();
+
+            Assert.AreEqual(_order.Status, EOrderStatus.Canceled);
         }
 
         [TestMethod]
         [TestCategory("Domain")]
         public void Dado_um_novo_item_sem_produto_o_mesmo_nao_deve_ser_adicionado()
         {
-            _order.Cancel();
+            _order.AddItem(null, 10);
 
-            Assert.AreEqual(_order.Status, EOrderStatus.Canceled);
+            Assert.AreEqual(_order.Items.Count, 0);
         }
 
         [TestMethod]
